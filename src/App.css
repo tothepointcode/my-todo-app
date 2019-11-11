@@ -1,33 +1,103 @@
 .App {
   text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
+  background: #333;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  color: #fff;
 }
 
-.App-link {
-  color: #61dafb;
+.heading {
+  font-family: cursive;
+  text-decoration: underline;
+  background-color: teal;
+  color: #eee;
+  padding: 5px 0;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.clock{
+  padding: 15px;
+  font-size: 1.2rem;
+}
+
+.todoInput, .todoList {
+  width: 60%;
+  padding: 10px 0px;
+  margin: auto;
+}
+.todoInput input {
+  width: 90%;
+  height: 2rem;
+  font-size: 1.2rem;
+  border-radius: 4px;
+  padding: 5px 15px;
+  outline: none;
+  border: none;
+
+  transition: all 0.5s ease-out;
+}
+
+.todoInput input:focus {
+  width: 100%;
+  height: 2.5rem;
+  border: 3px solid teal;
+  font-size: 1.2rem;
+  color: teal;
+}
+
+.todoList li {
+  background: #222;
+  min-height: 3rem;
+  margin: 0.5rem;
+  font-size: 1.2rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  list-style: none;
+  text-align: left;
+  position: relative;
+
+  transition: all 0.3s ease-out;
+}
+
+.todoList li span:nth-child(1){
+  color: teal;
+  font-weight: bold;
+  padding-right: 0.6rem;
+}
+
+.todoList li span:nth-child(3){
+  color:teal;
+  font-weight: bold;
+  margin-right: 1rem;
+  position: absolute;
+  right: 0;
+}
+.todoList li span:nth-child(3):hover{
+  color:red;
+}
+
+.todoList li:hover {
+  background: rgba(34,34,34,0.5);
+  font-size: 1.2rem;
+  cursor: pointer;
+
+}
+
+.footer {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  color: teal;
+  text-align: center;
+  padding: 15px;
+}
+
+
+@media screen and (max-width: 420px) {
+  .todoList li {
+    margin: 1rem 0.5rem;
   }
-  to {
-    transform: rotate(360deg);
+
+  .todoInput, .todoList {
+    width: 80%;
   }
 }
