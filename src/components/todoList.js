@@ -6,8 +6,8 @@ export default class TodoList extends React.Component {
         this.handleDelete = this.handleDelete.bind(this);
     }
 
-    handleDelete(id) {
-        this.props.handleDeleteTodo(id);
+    handleDelete(item) {
+        this.props.handleDeleteTodo(item);
     }
 
     handleUpdate(item) {
@@ -17,7 +17,7 @@ export default class TodoList extends React.Component {
     render(){
         let todos = this.props.todoList;
         todos = todos.map((item)=>{
-            return <li key={item.id}><span>--</span> <span onClick={this.handleUpdate.bind(this, item)}>{item.task}</span> <span onClick={this.handleDelete.bind(this, item.id)}>X</span> </li>
+            return <li key={item.id}><span>--</span> <span onClick={this.handleUpdate.bind(this, item)}>{item.task}</span> <span onClick={this.handleDelete.bind(this, item)}>X</span> </li>
         });
         return(
             <div className="todoList">

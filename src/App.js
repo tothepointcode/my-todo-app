@@ -7,9 +7,14 @@ import TodoInput from './components/todoInput';
 import TodoList from './components/todoList';
 import uuid from 'uuid';
 
+// Firebase
+import myTodosRef from './firebase';
+
+
 export default class App extends React.Component {
   constructor(props){
     super(props);
+
     this.state={
       updateId: 0,
       updateTask: "",
@@ -20,50 +25,52 @@ export default class App extends React.Component {
     this.handleUpdateTodo = this.handleUpdateTodo.bind(this);
     this.handleInputChange = this.handleInputChange.bind(this);
     this.handleUpdateTodoSave = this.handleUpdateTodoSave.bind(this);
+    this.fetchData = this.fetchData.bind(this);
+  }
+
+  fetchData() {
+    let myTodos = [];
+
+    myTodosRef.once("value", snapshot => {
+      snapshot.forEach(data => {
+        let myTodo = {
+          id: data.val().id,
+          task: data.val().task,
+          key: data.key
+        };
+        myTodos.push(myTodo);
+      });
+      this.setState({
+        todoList: myTodos,
+        updateTask: ""
+      });
+    });
   }
 
   componentWillMount() {
-    this.setState({
-      todoList: [
-        {
-          id: uuid(),
-          task: "Buy food stuff"
-        },
-        {
-          id: uuid(),
-          task: "Finish react project"
-        },
-        {
-          id: uuid(),
-          task: "Fix faulty television"
-        }
-      ]
-    })
+    this.fetchData();
   }
 
   handleNewTodo(newTodo) {
-    let oldTodoList = this.state.todoList;
-
-    // let newId = oldTodoList[oldTodoList.length-1].id + 1
-
     newTodo = {
       id: uuid(),
       task: newTodo
     }
-    oldTodoList.push(newTodo);
+ 
+    // Firebase
+    myTodosRef.push().set(newTodo).then(()=>{});
 
-    this.setState({
-      todoList: oldTodoList,
-      updateTask: ""
-    });
-    console.log(this.state.todoList);
+    this.fetchData();
   }
 
-  handleDeleteTodo(todoId) {
+  handleDeleteTodo(todoItem) {
+    // Firebase
+    myTodosRef.child(todoItem.key).remove().then(()=> {});
+
     let oldTodoList = this.state.todoList;
 
     oldTodoList = oldTodoList.filter((item)=>{
-      return item.id !== todoId;
+      return item.id !== todoItem.id;
     });
 
     this.setState({
@@ -74,6 +81,7 @@ export default class App extends React.Component {
   handleUpdateTodo(item) {
     this.setState({
       updateId: item.id,
+      updateKey: item.key,
       updateTask: item.task
     });
   }
@@ -82,6 +90,7 @@ export default class App extends React.Component {
     let oldTodoList = this.state.todoList;
     let updatedTodo = {
       id: this.state.updateId,
+      key: this.state.updateKey,
       task: todo
     }
 
@@ -96,6 +105,9 @@ export default class App extends React.Component {
       updateId: 0,
       updateTask: ""
     });
+
+    // Firebase
+    myTodosRef.child(this.state.updateKey).update({id: this.state.updateId, task: todo}).then(()=>{});
   }
 
   handleInputChange(value) {
