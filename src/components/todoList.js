@@ -16,12 +16,17 @@ export default class TodoList extends React.Component {
 
     render(){
         let todos = this.props.todoList;
-        todos = todos.map((item)=>{
+
+        const todoList = todos.length ? (
+            todos.map((item)=>{
             return <li key={item.id}><span>--</span> <span onClick={this.handleUpdate.bind(this, item)}>{item.task}</span> <span onClick={this.handleDelete.bind(this, item)}>X</span> </li>
-        });
+        }) ) : ( 
+            <p>Loading ... </p> 
+        );
+        
         return(
             <div className="todoList">
-                {todos}
+                {todoList}
             </div>
         );
     }
